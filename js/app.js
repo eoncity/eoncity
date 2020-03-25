@@ -59,18 +59,14 @@ App = {
   loadReward: function() {
     var namelist = {};
     $.getJSON('profile/list.json', function(data) {
-      //console.log("profile list",data);
       namelist = data;
     });
-    //var namelist = await $.getJSON('profile/list.json');
     App.contracts.EONMemorial.deployed().then(function(instance) {
       eonMemorialInstance = instance;
       
     }).then(function(result) {
       return eonMemorialInstance.getMemorialList();      
     }).then(function(result) {
-      //console.log(result);
-      //return App.getToken(result);
 
       App.eonMemorialInstance = eonMemorialInstance;
       let promises = [];
@@ -78,7 +74,6 @@ App = {
       result.forEach(item => {
         promises.push(
           App.eonMemorialInstance.getMemorial(item+"").then(data=>{
-            //console.log("data",data);
             myData.push(data);
           })
         );
@@ -89,17 +84,12 @@ App = {
       });
 
     }).then(function(names){
-      console.log("name", names);
-      console.log("name list",namelist);
       var awardRow = $('#awardRow');
       var awardTemplate = $('#awardTemplate');
       awardRow.empty();
       for (i = 0; i < names.length; i ++) {
-        // if(names[i][0]==0) continue;
         if(names[i][0]==0) continue;
 
-        // awardTemplate.find('.panel-title').text(names[i][3]);
-        //awardTemplate.find('.panel-name').text(names[i][0] +"(" +names[i][1]+")");
         awardTemplate.find('.panel-name').text(names[i][0]);
         if(namelist[names[i][2]]){
           awardTemplate.find('.panel-image').attr('src',namelist[names[i][2]].avatar);
