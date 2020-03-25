@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Leader Board</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrapValidator.min.css" rel="stylesheet"/>
+    
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12 col-sm-8 col-sm-push-2">
+          <h1 class="text-center">&emsp;In Memory, Never Forget</h1>
+          <h2 class="text-center">&emsp;For those people who died by the COVID-19</h2>
+          <hr/>
+          <br/>
+        </div>
+      </div>
+
+      <ul id="awardTab" class="nav nav-tabs" role="tablist">
+        <li class="active"><a href="#tagHome" role="tab" data-toggle="tab">Home</a></li>
+        <li><a href="#tabAdmin" role="tab" data-toggle="tab">Admin</a></li>
+        <li><a href="#tabLoadList" role="tab" data-toggle="tab">Load List</a></li>
+
+      </ul>
+      <div id="myTabContent" class="tab-content">
+        <div class="tab-pane active" id="tagHome">
+          <br />
+          <div id="awardRow" class="row">
+          </div>
+
+          <div id="awardTemplate" style="display: none;">
+            <div class="col-sm-6 col-md-4 col-lg-3">
+              <div class="panel panel-default panel-pet">
+                <div class="panel-heading">
+                  <img class="panel-image" style='width:200px'>
+                  <h3 class="panel-name">Unknow</h3>
+                </div>
+                <div class="panel-body">
+                  <strong>生卒年月 Born/Died Date:</strong>&emsp;&emsp; <span class="born-date"></span><br/>
+                  <strong>生平 Bio:</strong>&emsp;&emsp; <span class="bio"></span><br/>
+                </div>
+              </div>
+            </div>
+          </div>
+          <h3 class="text-center">New Award</h3>
+          <hr/>
+          <div id="rewardList" >
+            <div style="width: 50%;margin:auto">
+              <div class="panel panel-default panel-pet">
+                <div class="panel-heading">
+                  <h3 class="panel-title">New Award</h3>
+                </div>
+                <div class="panel-body">
+                    <form id="newAwardForm" role="form" data-toggle="validator">
+                      <div class="form-group">
+                          <label>Chinese Name</label>
+                          <input type="text" class="form-control" name="c_name" id="c_name" value="" required>
+                      </div>
+                      <div class="form-group">
+                          <label>English Name</label>
+                          <input type="text" class="form-control" pattern="^[\x20-\x7F]+$" name="e_name" id="e_name" value="" required>
+                      </div>
+                      <div class="form-group">
+                          <label>Key</label>
+                          <input type="text" class="form-control" pattern="^[\x20-\x7F]+$" name="key" id="key" maxlength="32" value="" required>
+                      </div>
+                      <div class="form-group">
+                        <label>Type</label>
+                        <input type="radio" name="type" id="type1" value=1 required checked>1
+                        <input type="radio" name="type" id="type0" value="0">0
+                    </div>
+                      <div class="form-group">
+                          <label>Born Date</label>
+                          <input type="text" class="form-control" name="bornDate" id="bornDate" maxlength="32" value="">
+                      </div>
+                      <div class="form-group">
+                        <label>Died Date</label>
+                        <input type="text" class="form-control" name="diedDate" id="diedDate" maxlength="32" value="" required>
+                    </div>
+                    <button id="btnAward" ame="btnAward" class="btn btn-primary btn-award">Award</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+            </div>
+        </div>
+     
+        
+        <div class="tab-pane fade" id="tabAdmin">
+          <h3 class="text-center">Admin List</h3>
+          <hr/>
+          <div id="adminRow1" class="width: 50%;margin:auto;row">
+            <div id="adminTemplate2" style="width: 50%;margin:auto">
+              <div class="panel panel-default panel-pet">
+                <div class="panel-heading">
+                  <h3 class="panel-title">Admin</h3>
+                </div>
+                <div id="adminRow" class="row">
+                </div>
+                <div id="adminTemplate" style="display: none;">
+                  <div class="panel-body">
+                      &emsp;&emsp; <strong>Address:</strong>&emsp;&emsp; <span class="leader-admin"></span> &emsp;&emsp;<button name="btnDelAdmin" class="btn btn-primary btn-del-admin" id="btnAddAdmin">Del</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <br />
+          <div id="rewardList" >
+            <div style="width: 50%;margin:auto">
+              <div class="panel panel-default panel-pet">
+                <div class="panel-heading">
+                  <h3 class="panel-title">New Admin</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label>Address</label>
+                        <input type="text" class="form-control" name="leader-admin" id="leader-admin" value="">
+                    </div>
+                  <button name="btnAddAdmin" class="btn btn-primary btn-add-admin" id="btnAddAdmin">Add</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="tab-pane fade" id="tabLoadList">
+          <h3 class="text-center">Name List</h3>
+          <hr/>
+            <div id="nameList" >
+            <div style="width: 50%;margin:auto">
+              <div class="panel panel-default panel-pet">
+                <div class="panel-heading">
+                  <h3 class="panel-title">User List</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label>Name List</label>
+                        <textarea class="form-control" name="name-list" id="name-list" value=""></textarea>
+                        <textarea class="form-control" name="name-list2" id="name-list2" value=""></textarea>
+                    </div>
+                  <button name="btnLoadName" class="btn btn-primary btn-load-name" id="btnLoadName">Load Name</button>
+                  <button name="btnDeployAll" class="btn btn-primary btn-deploy-all" id="btnDeployAll">Deploy All</button>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <!----script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script-->
+    <script src="js/jquery.min.js"></script-->
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/bootstrapValidator.min.js"> </script>
+    <script src="js/tab.js"></script>
+    <script src="js/web3.min.js"></script>
+    <script src="js/truffle-contract.js"></script>
+    <script src="js/pinyin.js"></script>
+    <script src="js/sha.js"></script>
+    <script src="js/admin.js"></script>
+  </body>
+</html>
