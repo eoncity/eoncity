@@ -63,7 +63,6 @@ Admin = {
     $('#c_name').blur(Admin.handleUserName);
   },
   handleUserName: function() {
-    //alert(this.value);
     $('#e_name').val(pinyin.getFullChars(this.value));
     $('#key').val(pinyin.getFullChars(this.value));
   },
@@ -73,8 +72,6 @@ Admin = {
 
     lines = namelist.split(/\n/g);
     json = {};
-    //linejson = [];
-    // console.log(pinyin);
 
     for(j=0;j<lines.length;j++) {
 
@@ -107,7 +104,6 @@ Admin = {
   },
   DeployAll:function(){
     nameList = JSON.parse($('#name-list2').val());
-    // console.log(nameList,typeof nameList);
     web3.eth.getAccounts(function(error, accounts) {
       if (error) {
         console.log(error);
@@ -116,7 +112,6 @@ Admin = {
       var account = accounts[0];
 
       let promises = [];
-      //Object.keys(nameList).map(key=>{
 
       const results = Object.keys(nameList).map(async key => { 
         var c_name = nameList[key]['name'];//$("#c_name").val();
@@ -128,68 +123,27 @@ Admin = {
       
           var id = Admin.generateKey(key);
       
-          console.log(key,c_name,id);
-
           var eonMemorialInstance;
-          console.log(account,id,c_name,e_name,key,type,bornDate,diedDate);
           Admin.contracts.EONMemorial.deployed().then(function(instance) {
             eonMemorialInstance = instance;
-            console.log("id",id);
           }).then(function(result) {
-            console.log(eonMemorialInstance);
             return eonMemorialInstance.rewardMemorial(account,id,c_name,e_name,key,type,bornDate,diedDate,{from:account});
-          // }).then(function(result) {
-          //   console.log(result);
-          //   return Admin.loadReward();
+          }).then(function(result) {
+            return Admin.loadReward();
           }).catch(function(err) {
             console.log(err.message);
           })
         return key; });
       Promise.all(results).then((key)=>{
-        console.log("key is ",key); 
-        //});
+        //console.log("key is ",key); 
       });
-      // for(var key in nameList){
-
-      //   var c_name = nameList[key]['name'];//$("#c_name").val();
-      //   var e_name = key;
-      //   var key = key;
-      //   var type = 1;
-      //   var bornDate = Admin.stringToTimestamp("");
-      //   var diedDate = Admin.stringToTimestamp(nameList[key]['dieddate']);
-    
-      //   var id = Admin.generateKey(key);
-    
-      //   console.log(key,c_name,id);
-
-      //   var eonMemorialInstance;
-
-      //     //console.log(account);
-      //     console.log(account,id,c_name,e_name,key,type,bornDate,diedDate);
-    
-      //     await Admin.contracts.EONMemorial.deployed().then(function(instance) {
-      //       eonMemorialInstance = instance;
-      //       console.log("id",id);
-      //     }).then(function(result) {
-      //       console.log(eonMemorialInstance);
-      //       return eonMemorialInstance.rewardMemorial(account,id,c_name,e_name,key,type,bornDate,diedDate,{from:account});
-          
-      //     }).then(function(result) {
-      //       console.log(result);
-      //       return Admin.loadReward();
-      //     }).catch(function(err) {
-      //       console.log(err.message);
-      //     });
-      //   }
+      
       });
-
-    
 
   },
   loadReward: function() {
     var namelist = {};
     $.getJSON('profile/list.json', function(data) {
-      //console.log("profile list",data);
       namelist = data;
     });
     Admin.contracts.EONMemorial.deployed().then(function(instance) {
@@ -198,8 +152,6 @@ Admin = {
     }).then(function(result) {
       return eonMemorialInstance.getMemorialList();      
     }).then(function(result) {
-      //console.log(result);
-      //return App.getToken(result);
 
       Admin.eonMemorialInstance = eonMemorialInstance;
       let promises = [];
@@ -207,7 +159,6 @@ Admin = {
       result.forEach(item => {
         promises.push(
           Admin.eonMemorialInstance.getMemorial(item+"").then(data=>{
-            //console.log("data",data);
             myData.push(data);
           })
         );
@@ -218,14 +169,11 @@ Admin = {
       });
 
     }).then(function(names){
-      console.log("name", names);
 
       var awardRow = $('#awardRow');
       var awardTemplate = $('#awardTemplate');
       awardRow.empty();
       for (i = 0; i < names.length; i ++) {
-        // if(names[i][0]==0) continue;
-        // awardTemplate.find('.panel-title').text(names[i][3]);
         awardTemplate.find('.panel-name').text(names[i][0] +"(" +names[i][1]+")");
         if(namelist[names[i][2]]){
           awardTemplate.find('.panel-image').attr('src',namelist[names[i][2]].avatar);
@@ -266,7 +214,6 @@ Admin = {
     }).then(function(result) {
       return eonMemorialInstance.getAdminList();      
     }).then(function(list){
-      console.log("name",list);
 
       var adminRow = $('#adminRow');
       var adminTemplate = $('#adminTemplate');
@@ -281,12 +228,6 @@ Admin = {
       console.log(err.message);
     });
     
-  },
-  generateId: function(year) {
-    var random = year  + Date.now() ;//+ Math.random();
-    // console.log(random);
-    return random;
-    //return crypto.createHash('sha256').update(random).digest('hex');
   },
   generateKey: function(key) {
     return "0x"+sha256(key);
@@ -327,7 +268,7 @@ Admin = {
       var bornDate = Admin.stringToTimestamp($('#bornDate').val());
       var diedDate = Admin.stringToTimestamp($('#diedDate').val());
   
-      var id = Admin.generateId(2019);
+      var id = Admin.generateKey(key);
   
       var eonMemorialInstance;
   
@@ -337,18 +278,12 @@ Admin = {
         }
   
         var account = accounts[0];
-        //console.log(account);
-        console.log(account,id,c_name,e_name,key,type,bornDate,diedDate);
   
         Admin.contracts.EONMemorial.deployed().then(function(instance) {
           eonMemorialInstance = instance;
-          console.log("id",key);
         }).then(function(result) {
-          console.log(eonMemorialInstance);
           return eonMemorialInstance.rewardMemorial(account,id,c_name,e_name,key,type,bornDate,diedDate,{from:account});
-        
         }).then(function(result) {
-          console.log(result);
           return Admin.loadReward();
         }).catch(function(err) {
           console.log(err.message);
@@ -369,18 +304,15 @@ Admin = {
       }
 
       var account = accounts[0];
-      //console.log(account);
-      //console.log(admin);
+      
 
       Admin.contracts.EONMemorial.deployed().then(function(instance) {
         eonMemorialInstance = instance;
       }).then(function(result) {
         return eonNMemorialInstance.addAdmin(admin,{from:account});
       }).then(function(result) {
-        //console.log(result);
         return Admin.loadAdmin();
       }).catch(function(err) {
-        console.log(err);
         console.log(err.message);
       });
     });
@@ -388,13 +320,11 @@ Admin = {
   handleRemoveAdmin: function(event) {
     event.preventDefault();
 
-    //var admin = $("#leader-admin").val();
     var admin = $(event.target).data('id');
 
     if(admin=='0x0000000000000000000000000000000000000000'){
       return;
     }
-    console.log("admin",admin);
     var eonMemorialInstance;
 
     web3.eth.getAccounts(function(error, accounts) {
@@ -403,16 +333,12 @@ Admin = {
       }
 
       var account = accounts[0];
-      //console.log(account);
-      //console.log(admin);
-
+      
       Admin.contracts.EONMemorial.deployed().then(function(instance) {
         eonMemorialInstance = instance;
       }).then(function(result) {
-        console.log(eonMemorialInstance);
         return eonMemorialInstance.removeAdmin(admin,{from:account});
       }).then(function(result) {
-        console.log(result);
         return Admin.loadAdmin();
       }).catch(function(err) {
         console.log(err.message);
